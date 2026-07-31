@@ -1,0 +1,92 @@
+name: Sync iCal Feeds
+
+on:
+  schedule:
+    # Runs automatically every 15 minutes
+    - cron: '*/15 * * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install node-ical
+
+      - name: Fetch and Merge Calendars
+        run: |
+          node -e '
+          const ical = require("node-ical");
+          const fs = require("fs");
+
+          // DEFINE YOUR ICAL FEEDS HERE
+          // Make sure each URL starts with "https://"
+          const FEEDS = [
+            {
+              name: "Kid Activities",
+              url: "https://p39-caldav.icloud.com/published/2/MTAxNjcwNDg4MzEwMTY3MPwWxeBeZwIiwd4cSmqt4xKB7ADqMhsOpHDI_0DanFp0i1bUaqC5tgrdiggjN9NXk5sNClDmkcNMhZYi2ThlTPU",
+              color: "#3b82f6" // Blue
+            },
+            {
+              name: "Kid 2",
+              url: "https://pXX-caldav.icloud.com/published/3/YOUR_KID_2_LINK",
+              color: "#ec4899" // Pink
+            },
+            {
+              name: "Family",
+              url: "https://p39-caldav.icloud.com/published/2/MTAxNjcwNDg4MzEwMTY3MPwWxeBeZwIiwd4cSmqt4xLnb6f6z2YOPd7xpXzNGl9v4pIXFE5QNJZQvKLPMQelbK526p2X40shuhn4RArXtFo",
+              color: "#10b981" // Green
+            }
+          ];
+
+          async function syncAll() {
+            let combinedEvents = [];
+
+            for (const feed of FEEDS) {
+              try {
+                const data = await ical.async.fromURL(feed.url);
+                for (let k in data) {
+                  if (data.hasOwnProperty(k)) {
+                    const ev = data[k];
+                    if (ev.type === "VEVENT") {
+                      combinedEvents.push({
+                        title: `${ev.summary || "Event"} (${feed.name})`,
+                        start: ev.start,
+                        end: ev.end,
+                        allDay: !ev.start.toISOString().includes("T"),
+                        backgroundColor: feed.color,
+                        borderColor: feed.color
+                      });
+                    }
+                  }
+                }
+              } catch (err) {
+                console.error(`Error fetching feed ${feed.name}:`, err.message);
+              }
+            }
+
+            fs.writeFileSync("events.json", JSON.stringify(combinedEvents, null, 2));
+            console.log(`Synced a total of ${combinedEvents.length} events across all calendars.`);
+          }
+
+          syncAll();
+          '
+
+      - name: Commit and Push Updated Events
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add events.json
+          git commit -m "Automated multi-calendar sync" || exit 0
+          git push
+          git add events.json
+          git commit -m "Automated calendar sync" || exit 0
+          git push
