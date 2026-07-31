@@ -39,12 +39,12 @@ jobs:
               color: "#3b82f6" // Blue
             },
             {
-              name: "Kid 2",
+              name: "Andrew Work",
               url: "https://p39-caldav.icloud.com/published/2/MTAxNjcwNDg4MzEwMTY3MPwWxeBeZwIiwd4cSmqt4xLOHdeMZwEvnk5sFArkToDKqTFOdceOVE6eycjebrsXSBUVJGjCqi1mlMd9NT_1EQ4",
               color: "#ec4899" // Pink
             },
             {
-              name: "Family",
+              name: "Family Events",
               url: "https://p39-caldav.icloud.com/published/2/MTAxNjcwNDg4MzEwMTY3MPwWxeBeZwIiwd4cSmqt4xLnb6f6z2YOPd7xpXzNGl9v4pIXFE5QNJZQvKLPMQelbK526p2X40shuhn4RArXtFo",
               color: "#10b981" // Green
             }
@@ -61,7 +61,7 @@ jobs:
                     const ev = data[k];
                     if (ev.type === "VEVENT") {
                       combinedEvents.push({
-                        title: `${ev.summary || "Event"} (${feed.name})`,
+                        title: ev.summary || "Event",
                         start: ev.start,
                         end: ev.end,
                         allDay: !ev.start.toISOString().includes("T"),
