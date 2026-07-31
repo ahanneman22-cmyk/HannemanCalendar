@@ -127,9 +127,10 @@
     }
     
   /* 1. Force event background colors to display */
-    .fc-daygrid-event {
-      background-color: inherit;
-      border-color: inherit;
+    .fc-daygrid-event, 
+    .fc-event {
+      background-color: var(--fc-event-bg-color, inherit) !important;
+      border-color: var(--fc-event-border-color, inherit) !important;
     }
     /* Keep event text high-contrast white */
     .fc-event-main, .fc-event-title, .fc-event-time {
