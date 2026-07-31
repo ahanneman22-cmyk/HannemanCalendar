@@ -263,12 +263,14 @@
             buttonText: '2 Weeks'
           }
         },
-        initialView: 'dayGridMonth',
-        height: '100%', 
+        initialView: 'timeGridWeek', // 👈 Change default to vertical Time Grid
+        height: '100%',
+        slotMinTime: '06:00:00',    // 👈 Optional: Start day at 6:00 AM to save vertical space
+        slotMaxTime: '22:00:00',    // 👈 Optional: End day at 10:00 PM
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridTwoWeeks,dayGridMonth'
+          right: 'timeGridWeek,dayGridTwoWeeks,dayGridMonth' // 👈 Added timeGridWeek button
         },
         displayEventTime: true,
         eventTimeFormat: {
