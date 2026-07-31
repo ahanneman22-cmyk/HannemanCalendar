@@ -9,13 +9,22 @@
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
   <style>
+    /* =========================================================
+       EVERGREEN DREAMS PALETTE & CORE STYLES
+       ========================================================= */
     :root {
-      --bg-color: #0f172a;       /* Deep slate background (easy on TV screens) */
-      --card-bg: #1e293b;        /* Dark blue-gray card background */
-      --text-main: #f8fafc;      /* Crisp white text */
-      --text-muted: #94a3b8;     /* Muted gray text */
-      --border-color: #334155;   /* Subtle border lines */
-      --text-highlight: #919682;
+      --bg-color: #0f172a;        /* Deep slate background */
+      --card-bg: #1e293b;         /* Dark blue-gray card background */
+      --text-main: #f8fafc;       /* Crisp white text */
+      --text-muted: #94a3b8;      /* Muted gray text */
+      --border-color: #334155;    /* Subtle border lines */
+      
+      /* Palette Accents */
+      --sage-primary: #919682;   /* Main Sage Green accent */
+      --sage-light: #C7CDBF;     /* Light Sage for headers/today */
+      --sand-warm: #C7A491;      /* Warm Sand */
+      --pink-soft: #EECFCA;      /* Soft Pink */
+      --olive-dark: #595E48;     /* Dark Olive */
     }
 
     * {
@@ -35,7 +44,9 @@
       gap: 20px;
     }
 
-    /* Top Dashboard Header */
+    /* =========================================================
+       HEADER & LEGEND BAR
+       ========================================================= */
     .dashboard-header {
       display: flex;
       justify-content: space-between;
@@ -51,10 +62,9 @@
       font-size: 2rem;
       font-weight: 800;
       letter-spacing: -0.5px;
-      color: var(--text-highlight);
+      color: var(--sage-primary);
     }
 
-    /* Live Digital Clock */
     .clock-group {
       text-align: right;
     }
@@ -64,6 +74,7 @@
       font-weight: 800;
       line-height: 1;
       font-variant-numeric: tabular-nums;
+      color: var(--text-main);
     }
 
     .clock-date {
@@ -73,7 +84,6 @@
       font-weight: 500;
     }
 
-    /* Family Member Legend Bar */
     .legend-bar {
       display: flex;
       gap: 24px;
@@ -98,7 +108,9 @@
       border-radius: 50%;
     }
 
-    /* Calendar Container */
+    /* =========================================================
+       CALENDAR CARD CONTAINER
+       ========================================================= */
     #calendar-card {
       flex: 1;
       background: var(--card-bg);
@@ -108,9 +120,9 @@
       box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.4);
     }
 
-    /* --- FullCalendar TV Optimizations --- */
-    
-    /* Header Toolbar Controls */
+    /* =========================================================
+       FULLCALENDAR OVERRIDES & TV OPTIMIZATIONS
+       ========================================================= */
     .fc .fc-toolbar-title {
       font-size: 2.2rem !important;
       font-weight: 800;
@@ -125,38 +137,28 @@
       padding: 8px 16px !important;
       border-radius: 8px !important;
     }
-    
-  /* 1. Force event background colors to display */
-    .fc-daygrid-event, 
-    .fc-event {
-      background-color: var(--fc-event-bg-color, inherit) !important;
-      border-color: var(--fc-event-border-color, inherit) !important;
-    }
-    /* Keep event text high-contrast white */
-    .fc-event-main, .fc-event-title, .fc-event-time {
-      color: #ffffff !important;
-      font-weight: 700 !important;
+
+    .fc .fc-button-active {
+      background-color: var(--sage-primary) !important;
+      border-color: var(--sage-primary) !important;
     }
 
-    /* 2. Fix Week Header Colors (Sun, Mon, Tue...) */
+    /* Day Headers (Sun, Mon, Tue...) */
     .fc-col-header-cell {
       background-color: var(--card-bg) !important;
     }
 
     .fc-col-header-cell-cushion {
-      color: #38bdf8 !important; /* High-contrast Sky Blue */
+      color: var(--sage-light) !important;
       font-size: 1.2rem !important;
       font-weight: 800 !important;
       text-decoration: none !important;
       padding: 10px 0 !important;
     }
-    .fc .fc-button-active {
-     background-color: var(--text-highlight) !important;
-      border-color: var(--text-highlight) !important;
-    }
 
-    /* Grid & Cell Styling */
-    .fc theme-standard td, .fc theme-standard th {
+    /* Grid Cells */
+    .fc theme-standard td, 
+    .fc theme-standard th {
       border-color: var(--border-color) !important;
     }
 
@@ -167,14 +169,18 @@
       padding: 8px 12px !important;
     }
 
-    /* Highlight Today */
+    .fc-daygrid-day-frame {
+      min-height: 220px !important;
+    }
+
+    /* Highlight Today with Sage Accent */
     .fc .fc-day-today {
-      background-color: rgba(145, 150, 130, 0.08) !important;  
+      background-color: rgba(145, 150, 130, 0.08) !important;
     }
 
     .fc .fc-day-today .fc-daygrid-day-number {
-      color: var(--text-highlight) !important;
-      background: rgba(145, 150, 130, 0.2);
+      color: var(--sage-primary) !important;
+      background: rgba(145, 150, 130, 0.25);
       border-radius: 50%;
       width: 36px;
       height: 36px;
@@ -183,37 +189,11 @@
       justify-content: center;
     }
 
-    /* Event Badges (Kid-friendly & Bold) */
+    /* Event Base Styles */
     .fc-event {
-      border-radius: 8px !important;
-      font-size: 1rem !important;
-      font-weight: 700 !important;
-      padding: 4px 8px !important;
-      margin-top: 3px !important;
       border: none !important;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      background-color: inherit !important;
-      border-color: inherit !important;
-    }
-    .fc-event-title {
-      color: #ffffff !important;
-    }
-      /* Allow event titles to wrap onto multiple lines for TV reading */
-    .fc-event-title {
-      white-space: normal !important;
-      overflow: visible !important;
-      word-break: break-word;
-    }
-
-    .fc-daygrid-event {
-      white-space: normal !important;
-      align-items: flex-start !important;
-    }
-
-    /* Expand day cell minimum height to fill the TV screen comfortably */
-    .fc-daygrid-day-frame {
-      min-height: 220px !important;
-    }
+      border-radius: 8px !important;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
   </style>
 </head>
