@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Reptile Event (Kid Activities)",
+    "start": "2026-08-01T14:00:00.000Z",
+    "end": "2026-08-01T17:00:00.000Z",
+    "allDay": false,
+    "backgroundColor": "#3b82f6",
+    "borderColor": "#3b82f6"
+  },
+  {
+    "title": "Aquarium (Family)",
+    "start": "2026-08-01T19:00:00.000Z",
+    "end": "2026-08-01T21:00:00.000Z",
+    "allDay": false,
+    "backgroundColor": "#10b981",
+    "borderColor": "#10b981"
+  },
+  {
+    "title": "VetView Work Trip (Family)",
+    "start": "2026-08-07T00:00:00.000Z",
+    "end": "2026-08-13T00:00:00.000Z",
+    "allDay": false,
+    "backgroundColor": "#10b981",
+    "borderColor": "#10b981"
+  }
+]
