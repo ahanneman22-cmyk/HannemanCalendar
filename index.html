@@ -178,6 +178,23 @@
 
     .fc-event-title {
       color: #ffffff !important;
+
+      /* Allow event titles to wrap onto multiple lines for TV reading */
+    .fc-event-title {
+      white-space: normal !important;
+      overflow: visible !important;
+      word-break: break-word;
+    }
+
+    .fc-daygrid-event {
+      white-space: normal !important;
+      align-items: flex-start !important;
+    }
+
+    /* Expand day cell minimum height to fill the TV screen comfortably */
+    .fc-daygrid-day-frame {
+      min-height: 220px !important;
+    }
     }
   </style>
 </head>
