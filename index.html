@@ -270,25 +270,35 @@
         },
         events: './events.json?cachebust=' + new Date().getTime(),
 
-        // Display Event Title and Notes/Description cleanly
+        // Render Title + Notes with correct background color
         eventContent: function(arg) {
+          let container = document.createElement('div');
+          container.style.backgroundColor = arg.event.backgroundColor || '#919682';
+          container.style.borderColor = arg.event.borderColor || '#919682';
+          container.style.color = '#ffffff';
+          container.style.padding = '6px 8px';
+          container.style.borderRadius = '6px';
+          container.style.width = '100%';
+          container.style.boxSizing = 'border-box';
+
           let titleEl = document.createElement('div');
-          titleEl.classList.add('fc-event-title');
+          titleEl.style.fontWeight = '700';
+          titleEl.style.fontSize = '0.95rem';
+          titleEl.style.lineHeight = '1.2';
           titleEl.innerText = arg.event.title;
+          container.appendChild(titleEl);
 
-          let arrayOfNodes = [titleEl];
-
-          if (arg.event.extendedProps.description) {
+          if (arg.event.extendedProps && arg.event.extendedProps.description) {
             let descEl = document.createElement('div');
-            descEl.style.fontSize = '0.85rem';
+            descEl.style.fontSize = '0.8rem';
             descEl.style.fontWeight = '400';
             descEl.style.opacity = '0.9';
-            descEl.style.marginTop = '2px';
+            descEl.style.marginTop = '4px';
             descEl.innerText = arg.event.extendedProps.description;
-            arrayOfNodes.push(descEl);
+            container.appendChild(descEl);
           }
 
-          return { domNodes: arrayOfNodes };
+          return { domNodes: [container] };
         }
       });
 
