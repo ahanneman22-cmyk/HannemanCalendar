@@ -15,6 +15,7 @@
       --text-main: #f8fafc;      /* Crisp white text */
       --text-muted: #94a3b8;     /* Muted gray text */
       --border-color: #334155;   /* Subtle border lines */
+      --text-highlight: #919682;
     }
 
     * {
@@ -50,7 +51,7 @@
       font-size: 2rem;
       font-weight: 800;
       letter-spacing: -0.5px;
-      color: #38bdf8; /* Vibrant sky blue */
+      color: var(--text-highlight);
     }
 
     /* Live Digital Clock */
@@ -124,22 +125,38 @@
       padding: 8px 16px !important;
       border-radius: 8px !important;
     }
+    
+  /* 1. Force event background colors to display */
+    .fc-daygrid-event {
+      background-color: var(--fc-event-bg-color, #3b82f6) !important;
+      border-color: var(--fc-event-border-color, #3b82f6) !important;
+    }
 
+    /* Keep event text high-contrast white */
+    .fc-event-main, .fc-event-title, .fc-event-time {
+      color: #ffffff !important;
+    }
+
+    /* 2. Fix Week Header Colors (Sun, Mon, Tue...) */
+    .fc-col-header-cell {
+      background-color: var(--card-bg) !important;
+    }
+
+    .fc-col-header-cell-cushion {
+      color: #38bdf8 !important; /* High-contrast Sky Blue */
+      font-size: 1.2rem !important;
+      font-weight: 800 !important;
+      text-decoration: none !important;
+      padding: 10px 0 !important;
+    }
     .fc .fc-button-active {
-      background-color: #0284c7 !important;
-      border-color: #0284c7 !important;
+     background-color: var(--text-highlight) !important;
+      border-color: var(--text-highlight) !important;
     }
 
     /* Grid & Cell Styling */
     .fc theme-standard td, .fc theme-standard th {
       border-color: var(--border-color) !important;
-    }
-
-    .fc .fc-col-header-cell-cushion {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #919682;
-      padding: 10px 0 !important;
     }
 
     .fc .fc-daygrid-day-number {
@@ -151,12 +168,12 @@
 
     /* Highlight Today */
     .fc .fc-day-today {
-      background-color: rgba(56, 189, 248, 0.08) !important;
+      background-color: rgba(145, 150, 130, 0.08) !important;  
     }
 
     .fc .fc-day-today .fc-daygrid-day-number {
-      color: #38bdf8 !important;
-      background: rgba(56, 189, 248, 0.2);
+      color: var(--text-highlight) !important;
+      background: rgba(145, 150, 130, 0.2);
       border-radius: 50%;
       width: 36px;
       height: 36px;
