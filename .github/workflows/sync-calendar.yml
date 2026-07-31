@@ -67,6 +67,7 @@ jobs:
                         allDay: !ev.start.toISOString().includes("T"),
                         backgroundColor: feed.color,
                         borderColor: feed.color
+                        description: ev.description || ""
                       });
                     }
                   }
