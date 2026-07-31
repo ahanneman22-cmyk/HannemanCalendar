@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Calendar</title>
+
+  <!-- FullCalendar Core & Google Calendar Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.10/index.global.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+
+    #calendar-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Larger, readable title & buttons */
+    .fc-toolbar-title {
+      font-size: 2.2rem !important;
+      font-weight: 800 !important;
+      color: #0f172a;
+    }
+
+    .fc-button-primary {
+      background-color: #3b82f6 !important;
+      border-color: #3b82f6 !important;
+      font-size: 1.1rem !important;
+      font-weight: 600 !important;
+      border-radius: 10px !important;
+      padding: 8px 16px !important;
+    }
+
+    /* Big date numbers for kids */
+    .fc-daygrid-day-number {
+      font-size: 1.3rem !important;
+      font-weight: 700 !important;
+      padding: 8px !important;
+      color: #334155;
+    }
+
+    .fc-col-header-cell-cushion {
+      font-size: 1.2rem !important;
+      font-weight: 700 !important;
+      color: #64748b;
+      padding: 10px 0 !important;
+    }
+
+    /* Colorful Event Cards */
+    .fc-event {
+      border: none !important;
+      border-radius: 8px !important;
+      padding: 4px 8px !important;
+      margin-top: 3px !important;
+      font-size: 1.05rem !important;
+      font-weight: 600 !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .fc-day-today {
+      background-color: #eff6ff !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="calendar-container">
+    <div id="calendar"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 'auto',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: ''
+        },
+        
+        // 1. Insert your Google API Key here
+        googleCalendarApiKey: AIzaSyDDr4aNWQIy_xCtYBITdyvlggv4AOn3rXU,
+
+        // 2. Add your subscribed Google Calendar IDs & colors
+        eventSources: [
+          {
+            googleCalendarId: 'q87b51brvtmk50dcgq8k8h0k19t33069@import.calendar.google.com',
+            color: '#f97316',      // Bright Orange
+            textColor: '#ffffff'
+          },
+          {
+            googleCalendarId: 'KID2_GOOGLE_CALENDAR_ID@group.calendar.google.com',
+            color: '#0ea5e9',      // Sky Blue
+            textColor: '#ffffff'
+          },
+          {
+            googleCalendarId: 'en.usa#holiday@group.v.calendar.google.com',
+            color: '#10b981',      // Emerald Green
+            textColor: '#ffffff'
+          }
+        ],
+
+        // Optional: Prepend emojis based on keywords in event title
+        eventDidMount: function(info) {
+          let title = info.event.title.toLowerCase();
+          let prefix = '';
+
+          if (title.includes('swim') || title.includes('pool')) prefix = '🏊 ';
+          else if (title.includes('soccer') || title.includes('game')) prefix = '⚽ ';
+          else if (title.includes('music') || title.includes('piano')) prefix = '🎵 ';
+          else if (title.includes('doctor') || title.includes('dentist')) prefix = '🩺 ';
+          else if (title.includes('party') || title.includes('birthday')) prefix = '🎂 ';
+
+          if (prefix) {
+            let titleEl = info.el.querySelector('.fc-event-title');
+            if (titleEl) {
+              titleEl.innerText = prefix + info.event.title;
+            }
+          }
+        }
+      });
+
+      calendar.render();
+    });
+  </script>
+</body>
+</html>
