@@ -27,59 +27,46 @@ jobs:
       - name: Fetch and Merge Calendars
         run: |
           node -e '
-          const ical = require("node-ical");
-          const fs = require("fs");
+            const ical = require("node-ical");
+            const fs = require("fs");
 
-          // DEFINE YOUR ICAL FEEDS HERE
-          // Make sure each URL starts with "https://"
-          const FEEDS = [
-            {
-              name: "Kid Activities",
-              url: "https://p39-caldav.icloud.com/published/2/MTAxNjcwNDg4MzEwMTY3MPwWxeBeZwIiwd4cSmqt4xKB7ADqMhsOpHDI_0DanFp0i1bUaqC5tgrdiggjN9NXk5sNClDmkcNMhZYi2ThlTPU",
-              color: "#3b82f6" // Blue
-            },
-            {
-              name: "Andrew Work",
-              url: "https://p39-caldav.icloud.com/published/2/MTAxNjcwNDg4MzEwMTY3MPwWxeBeZwIiwd4cSmqt4xLOHdeMZwEvnk5sFArkToDKqTFOdceOVE6eycjebrsXSBUVJGjCqi1mlMd9NT_1EQ4",
-              color: "#ec4899" // Pink
-            },
-            {
-              name: "Family Events",
-              url: "https://p39-caldav.icloud.com/published/2/MTAxNjcwNDg4MzEwMTY3MPwWxeBeZwIiwd4cSmqt4xLnb6f6z2YOPd7xpXzNGl9v4pIXFE5QNJZQvKLPMQelbK526p2X40shuhn4RArXtFo",
-              color: "#10b981" // Green
-            }
-          ];
+            const FEEDS = [
+              { name: "Kid Activities", url: "https://p39-caldav.icloud.com/published/2/MTAxNjcwNDg4MzEwMTY3MPwWxeBeZwIiwd4cSmqt4xKB7ADqMhsOpHDI_0DanFp0i1bUaqC5tgrdiggjN9NXk5sNClDmkcNMhZYi2ThlTPU", color: "#3b82f6" },
+              { name: "Andrew Work", url: "https://p39-caldav.icloud.com/published/2/MTAxNjcwNDg4MzEwMTY3MPwWxeBeZwIiwd4cSmqt4xLOHdeMZwEvnk5sFArkToDKqTFOdceOVE6eycjebrsXSBUVJGjCqi1mlMd9NT_1EQ4", color: "#ec4899" },
+              { name: "Family Events", url: "https://p39-caldav.icloud.com/published/2/MTAxNjcwNDg4MzEwMTY3MPwWxeBeZwIiwd4cSmqt4xLnb6f6z2YOPd7xpXzNGl9v4pIXFE5QNJZQvKLPMQelbK526p2X40shuhn4RArXtFo", color: "#10b981" }
+            ];
 
-          async function syncAll() {
-            let combinedEvents = [];
-
-            for (const feed of FEEDS) {
-              try {
-                const data = await ical.async.fromURL(feed.url);
-                for (let k in data) {
-                  if (data.hasOwnProperty(k)) {
-                    const ev = data[k];
-                    if (ev.type === "VEVENT") {
-                      combinedEvents.push({
-                        title: ev.summary || "Event",
-                        start: ev.start,
-                        end: ev.end,
-                        allDay: !ev.start.toISOString().includes("T"),
-                        backgroundColor: feed.color,
-                        borderColor: feed.color,
-                        description: ev.description || ""
-                      });
+            async function syncAll() {
+              let combinedEvents = [];
+              for (const feed of FEEDS) {
+                try {
+                  const data = await ical.async.fromURL(feed.url);
+                  for (let k in data) {
+                    if (data.hasOwnProperty(k)) {
+                      const ev = data[k];
+                      if (ev.type === "VEVENT") {
+                        combinedEvents.push({
+                          title: ev.summary || "Event",
+                          start: ev.start,
+                          end: ev.end,
+                          allDay: !ev.start.toISOString().includes("T"),
+                          backgroundColor: feed.color,
+                          borderColor: feed.color,
+                          description: ev.description || ""
+                        });
+                      }
                     }
                   }
+                } catch (err) {
+                  console.error(`Error fetching feed ${feed.name}:`, err.message);
                 }
-              } catch (err) {
-                console.error(`Error fetching feed ${feed.name}:`, err.message);
               }
+
+              fs.writeFileSync("events.json", JSON.stringify(combinedEvents, null, 2));
+              console.log(`Synced a total of ${combinedEvents.length} events across all calendars.`);
             }
 
-            fs.writeFileSync("events.json", JSON.stringify(combinedEvents, null, 2));
-            console.log(`Synced a total of ${combinedEvents.length} events across all calendars.`);
-          }
+            syncAll();
 
           syncAll();
           '
