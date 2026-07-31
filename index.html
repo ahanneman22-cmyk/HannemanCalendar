@@ -128,13 +128,13 @@
     
   /* 1. Force event background colors to display */
     .fc-daygrid-event {
-      background-color: var(--fc-event-bg-color, #3b82f6) !important;
-      border-color: var(--fc-event-border-color, #3b82f6) !important;
+      background-color: inherit;
+      border-color: inherit;
     }
-
     /* Keep event text high-contrast white */
     .fc-event-main, .fc-event-title, .fc-event-time {
       color: #ffffff !important;
+      font-weight: 700 !important;
     }
 
     /* 2. Fix Week Header Colors (Sun, Mon, Tue...) */
@@ -191,6 +191,8 @@
       margin-top: 3px !important;
       border: none !important;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      background-color: inherit !important;
+      border-color: inherit !important;
     }
     .fc-event-title {
       color: #ffffff !important;
